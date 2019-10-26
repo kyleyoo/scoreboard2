@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import {Header} from './components/Header';
 import {Player} from "./components/Player";
+import {AddPlayerForm} from "./components/AddPlayerForm";
 
 class App extends React.Component {
   state = {
@@ -15,7 +16,7 @@ class App extends React.Component {
   render() {
     return (
       <div className="scoreboard">
-        <Header title="My Scoreboard" totalPlayers={11} />
+        <Header title="My Scoreboard" players={this.state.players} />
 
         {/*Player's List*/}
         {
@@ -24,6 +25,7 @@ class App extends React.Component {
                     removePlayer={this.handleRemovePlayer.bind(this)}
                     changeScore={this.handleChangeScore.bind(this)} />)
         }
+        <AddPlayerForm></AddPlayerForm>
       </div>
     );
   }
@@ -38,14 +40,21 @@ class App extends React.Component {
   handleChangeScore(id, delta) {
     console.log('handleChangeScore:',id, delta);
     this.setState(prevState => {
-      //새로운 배열을 리턴
+      /*//새로운 배열을 리턴
       const players = [...prevState.players]
       players.forEach(player => {
         if(player.id  ==id){
           player.score += delta;
         }
       });
-      return {players};//{players:players}
+      return {players};//{players:players}*/
+      const player = prevState.players.map(player =>{
+        if(player.id == id){
+          player.score += delta;
+        }
+        return player
+      })
+      return {player};
     });
 
   }
